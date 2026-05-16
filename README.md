@@ -63,13 +63,18 @@ Set watch paths so `apps/backend/**` and `apps/frontend/**` rebuild independentl
 
 ### If build fails with «No start command could be found»
 
-1. **Root Directory** must be `apps/backend` or `apps/frontend` — not the repo root.
-2. In the service **Settings → Deploy**, set **Start Command** manually if needed:
-   - **api:** `node dist/main.js`
-   - **web:** `npm run start:prod`
-3. Redeploy after changing root directory or start command.
+Your log shows `install: npm ci` + `build: npm run build` with an **empty start** — Railway is building the **repo root**, not `apps/backend`.
 
-Each service includes `nixpacks.toml` and `Procfile` so Nixpacks always has a start command.
+**API service (pick one):**
+
+| Option | What to do |
+|--------|------------|
+| A (recommended) | **Settings → Root Directory:** `apps/backend` → Redeploy |
+| B | Leave root empty; push latest code (root `nixpacks.toml` + `"start"` in `package.json`) → Redeploy |
+
+**Web service:** Root Directory **must** be `apps/frontend`. Start command: `npm run start:prod`.
+
+Manual override: **Settings → Deploy → Start Command** → `node dist/main.js` (api) or `npm run start:prod` (web).
 
 ## Project layout
 

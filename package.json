@@ -11,6 +11,11 @@
     "dev:api": "npm run dev -w @dutchy/backend",
     "dev:web": "npm run start -w @dutchy/frontend",
     "build": "npm run build -w @dutchy/shared && npm run build -w @dutchy/backend && npm run build -w @dutchy/frontend",
+    "build:api": "npm run build -w @dutchy/shared && npm run build -w @dutchy/backend",
+    "build:web": "npm run build -w @dutchy/shared && node scripts/generate-env.mjs && npm run build -w @dutchy/frontend",
+    "start": "node apps/backend/dist/main.js",
+    "start:api": "node apps/backend/dist/main.js",
+    "start:web": "npm run start:prod -w @dutchy/frontend",
     "build:shared": "npm run build -w @dutchy/shared",
     "generate:icons": "node scripts/generate-pwa-icons.mjs",
     "test:e2e": "npm run test -w @dutchy/e2e"

@@ -1,0 +1,15 @@
+# Used when Railway Root Directory is the repo root (default).
+# Prefer: set Root Directory to apps/backend (api) or apps/frontend (web).
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = [
+  "npm run build -w @dutchy/shared && npm run build -w @dutchy/backend",
+]
+
+[start]
+cmd = "node apps/backend/dist/main.js"
