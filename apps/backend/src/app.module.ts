@@ -10,6 +10,7 @@ import { ReceiptModule } from './receipt/receipt.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
       validate,
     }),
     ThrottlerModule.forRoot([

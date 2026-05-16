@@ -18,15 +18,14 @@ async function bootstrap() {
     }),
   );
 
-  const isProd = process.env.NODE_ENV === 'production';
-  const corsOrigin = process.env.CORS_ORIGIN?.trim();
+  const corsOrigin =
+    process.env.CORS_ORIGIN?.trim() ||
+    (process.env.RAILWAY_PUBLIC_DOMAIN
+      ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+      : '');
   const origins = corsOrigin
     ? corsOrigin.split(',').map((o) => o.trim()).filter(Boolean)
     : [];
-
-  if (isProd && origins.length === 0) {
-    throw new Error('CORS_ORIGIN must be set when NODE_ENV=production');
-  }
 
   app.enableCors({
     origin: origins.length > 0 ? origins : true,
