@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --color-surface: #faf8f5;
+  --color-surface-elevated: #ffffff;
+  --color-text: #1c1917;
+  --color-muted: #78716c;
+  --color-accent: #c96f5c;
+  --color-accent-soft: #f5e6e0;
+  --color-border: #e7e5e4;
+  --color-success: #7a9e7e;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background: #ebe8e4;
+    color: var(--color-text);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+  }
+
+  .font-tabular {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.dark {
+  --color-surface: #1c1917;
+  --color-surface-elevated: #292524;
+  --color-text: #fafaf9;
+  --color-muted: #a8a29e;
+  --color-accent: #d4846f;
+  --color-accent-soft: #3d3330;
+  --color-border: #44403c;
+  --color-success: #8fb393;
+}
