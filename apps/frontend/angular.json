@@ -56,7 +56,7 @@
           },
           "configurations": {
             "production": {
-              "allowedCommonJsDependencies": ["@receipt-splitter/shared"],
+              "allowedCommonJsDependencies": ["@dutchy/shared"],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

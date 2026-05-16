@@ -1,11 +1,13 @@
 {
-  "name": "@receipt-splitter/frontend",
+  "name": "@dutchy/frontend",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "prestart": "npm run build -w @receipt-splitter/shared",
+    "prestart": "npm run build -w @dutchy/shared",
     "start": "ng serve --proxy-config proxy.conf.json",
+    "prebuild": "node ../../scripts/generate-pwa-icons.mjs",
     "build": "ng build",
+    "start:prod": "serve dist/frontend/browser -s -l ${PORT:-4200}",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -30,8 +32,9 @@
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
     "@angular/service-worker": "^20.3.0",
-    "@receipt-splitter/shared": "*",
+    "@dutchy/shared": "*",
     "rxjs": "~7.8.0",
+    "serve": "^14.2.4",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

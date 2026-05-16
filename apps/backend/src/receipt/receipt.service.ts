@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { ParseReceiptResponse } from '@receipt-splitter/shared';
+import type { ParseReceiptResponse } from '@dutchy/shared';
 import { OpenAiService } from './openai.service';
 
 @Injectable()

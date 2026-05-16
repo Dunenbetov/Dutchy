@@ -1,7 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "cd ../.. && npm ci && npm run build -w @receipt-splitter/shared && node scripts/generate-env.mjs && npm run build -w @receipt-splitter/frontend"
+buildCommand = "cd ../.. && npm ci && npm run build -w @dutchy/shared && node scripts/generate-env.mjs && npm run build -w @dutchy/frontend"
 
 [deploy]
-# Serve static output — configure Railway as Static Site pointing to dist/frontend/browser
-# Or use: npx serve dist/frontend/browser -s -l $PORT
+startCommand = "npm run start:prod"

@@ -32,9 +32,41 @@
   }
 }
 
-:focus-visible {
+/* Buttons/links only — inputs use .field-input to avoid double focus rings */
+button:focus-visible,
+a:focus-visible,
+[role='button']:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+@layer components {
+  .field-input {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-height: 2.75rem;
+    border-radius: 1rem;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface-elevated);
+    padding-inline: 1rem;
+    color: var(--color-text);
+    outline: none;
+    box-shadow: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .field-input::placeholder {
+    color: var(--color-muted);
+  }
+
+  /* Border only — no outer glow (it bleeds past the field in narrow layouts) */
+  .field-input:focus,
+  .field-input:focus-visible {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

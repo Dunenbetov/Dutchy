@@ -1,13 +1,13 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import OpenAI from 'openai';
-import type { ParseReceiptResponse, ReceiptItem } from '@receipt-splitter/shared';
+import type { ParseReceiptResponse, ReceiptItem } from '@dutchy/shared';
 import {
   computeItemsSubtotal,
   normalizeParsedTotals,
   receiptTotalLooksLikeSubtotalOnly,
   totalsMatch,
-} from '@receipt-splitter/shared';
+} from '@dutchy/shared';
 import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 import { ParseReceiptResponseDto } from './parse-receipt.dto';

@@ -1,6 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "cd ../.. && npm ci && npm run build -w @receipt-splitter/shared && npm run build -w @receipt-splitter/backend"
+buildCommand = "cd ../.. && npm ci && npm run build -w @dutchy/shared && npm run build -w @dutchy/backend"
 
 [deploy]
 startCommand = "node dist/main.js"

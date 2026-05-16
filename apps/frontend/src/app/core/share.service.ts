@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class ShareService {
-  async shareSummary(text: string, title = 'Receipt Split'): Promise<boolean> {
+  async shareSummary(text: string, title = 'Dutchy'): Promise<boolean> {
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({ title, text });

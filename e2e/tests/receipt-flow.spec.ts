@@ -50,7 +50,7 @@ async function assignAllPiecesToAlex(page: import('@playwright/test').Page) {
   }
 }
 
-test.describe('Receipt Splitter wizard', () => {
+test.describe('Dutchy wizard', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });

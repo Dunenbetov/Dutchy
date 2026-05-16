@@ -6,10 +6,10 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
   selector: 'app-step-setup',
   imports: [FormsModule],
   template: `
-    <section class="flex flex-col gap-6" data-testid="step-setup">
+    <section class="flex min-w-0 flex-col gap-6" data-testid="step-setup">
       <header>
-        <h1 class="text-2xl font-bold tracking-tight text-text">Split the receipt</h1>
-        <p class="mt-1 text-sm text-muted">Snap a photo and add everyone at the table.</p>
+        <h1 class="text-2xl font-bold tracking-tight text-text">Dutchy</h1>
+        <p class="mt-1 text-sm text-muted">Snap a receipt and split the bill with friends.</p>
       </header>
 
       <label
@@ -44,7 +44,7 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
         />
       }
 
-      <div class="flex flex-col gap-3">
+      <div class="flex min-w-0 flex-col gap-3">
         <h2 class="text-sm font-semibold uppercase tracking-wide text-muted">Friends</h2>
         <div class="flex flex-wrap gap-2">
           @for (friend of store.friends(); track friend.id) {
@@ -55,7 +55,7 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
               {{ friend.name }}
               <button
                 type="button"
-                class="ml-1 min-h-6 min-w-6 rounded-full text-muted hover:bg-surface-elevated hover:text-text"
+                class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-base leading-none text-muted hover:bg-surface hover:text-text"
                 [attr.aria-label]="'Remove ' + friend.name"
                 (click)="store.removeFriend(friend.id)"
               >
@@ -64,10 +64,10 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
             </span>
           }
         </div>
-        <div class="flex gap-2">
+        <div class="flex min-w-0 items-stretch gap-2">
           <input
             type="text"
-            class="min-h-11 flex-1 rounded-2xl border border-border bg-surface-elevated px-4 text-text outline-none focus:ring-2 focus:ring-accent/40"
+            class="field-input min-w-0 flex-1 basis-0"
             placeholder="Friend name"
             [(ngModel)]="friendName"
             (keydown.enter)="addFriend()"
@@ -75,7 +75,7 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
           />
           <button
             type="button"
-            class="min-h-11 min-w-11 rounded-2xl bg-accent px-4 font-semibold text-white transition active:scale-[0.98]"
+            class="h-11 shrink-0 rounded-2xl bg-accent px-5 font-semibold text-white transition hover:brightness-105 active:scale-[0.98]"
             (click)="addFriend()"
             data-testid="add-friend-btn"
           >

@@ -1,7 +1,7 @@
 {
-  "name": "Receipt Splitter",
-  "short_name": "Split",
-  "description": "Split restaurant receipts with friends",
+  "name": "Dutchy",
+  "short_name": "Dutchy",
+  "description": "Split restaurant bills with friends",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#faf8f5",

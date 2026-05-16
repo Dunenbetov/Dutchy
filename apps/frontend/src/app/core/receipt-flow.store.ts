@@ -16,7 +16,7 @@ import {
   remainingQuantity,
   resolveServiceChargeAmount,
   totalsMatch,
-} from '@receipt-splitter/shared';
+} from '@dutchy/shared';
 import { ReceiptApiService } from './receipt-api.service';
 import { ImageCompressionService } from './image-compression.service';
 
@@ -396,7 +396,7 @@ export class ReceiptFlowStore {
   }
 }
 
-/** Local helpers — kept in frontend so Vite does not serve a stale prebundle of @receipt-splitter/shared. */
+/** Local helpers — kept in frontend so Vite does not serve a stale prebundle of @dutchy/shared. */
 function receiptTotalLooksLikeSubtotalOnly(
   receiptTotal: number,
   itemsSubtotal: number,

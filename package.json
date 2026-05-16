@@ -1,5 +1,5 @@
 {
-  "name": "receipt-splitter",
+  "name": "dutchy",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -7,12 +7,13 @@
     "e2e"
   ],
   "scripts": {
-    "dev": "npm run build:shared && concurrently -n shared,api,web -c gray,blue,green \"npm run watch -w @receipt-splitter/shared\" \"npm run dev -w @receipt-splitter/backend\" \"npm run start -w @receipt-splitter/frontend\"",
-    "dev:api": "npm run dev -w @receipt-splitter/backend",
-    "dev:web": "npm run start -w @receipt-splitter/frontend",
-    "build": "npm run build -w @receipt-splitter/shared && npm run build -w @receipt-splitter/backend && npm run build -w @receipt-splitter/frontend",
-    "build:shared": "npm run build -w @receipt-splitter/shared",
-    "test:e2e": "npm run test -w @receipt-splitter/e2e"
+    "dev": "npm run build:shared && concurrently -n shared,api,web -c gray,blue,green \"npm run watch -w @dutchy/shared\" \"npm run dev -w @dutchy/backend\" \"npm run start -w @dutchy/frontend\"",
+    "dev:api": "npm run dev -w @dutchy/backend",
+    "dev:web": "npm run start -w @dutchy/frontend",
+    "build": "npm run build -w @dutchy/shared && npm run build -w @dutchy/backend && npm run build -w @dutchy/frontend",
+    "build:shared": "npm run build -w @dutchy/shared",
+    "generate:icons": "node scripts/generate-pwa-icons.mjs",
+    "test:e2e": "npm run test -w @dutchy/e2e"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

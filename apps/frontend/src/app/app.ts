@@ -37,7 +37,7 @@ import { ReceiptFlowStore } from './core/receipt-flow.store';
               : 'min-h-dvh max-w-[390px] bg-surface'
           "
         >
-          <div class="flex min-h-0 flex-1 flex-col p-5">
+          <div class="flex min-h-0 min-w-0 flex-1 flex-col p-5">
             <app-shell />
           </div>
         </div>

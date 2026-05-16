@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { assignmentSummaryLabel } from '@receipt-splitter/shared';
+import { assignmentSummaryLabel } from '@dutchy/shared';
 import { ReceiptFlowStore } from '../../core/receipt-flow.store';
 import { KztPipe } from '../../core/kzt.pipe';
 

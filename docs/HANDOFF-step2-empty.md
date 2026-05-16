@@ -13,7 +13,7 @@ Screenshot: `assets/________________2026-05-17___00.59.30-4b13b96c-d4a5-4f1b-aaa
 
 ## Project context
 
-**Receipt Splitter PWA** — monorepo at `/Users/diamond/Desktop/split-app`
+**Dutchy** PWA — monorepo at `/Users/diamond/Desktop/split-app` (git folder name unchanged)
 
 | Path | Role |
 |------|------|
@@ -23,7 +23,7 @@ Screenshot: `assets/________________2026-05-17___00.59.30-4b13b96c-d4a5-4f1b-aaa
 
 **Run locally:** `npm run dev` → http://localhost:4200 + API http://localhost:3000/api/health
 
-**Env:** `apps/backend/.env` has `OPENAI_API_KEY` (user provided).  
+**Env:** copy `apps/backend/.env.example` → `.env` and set `OPENAI_API_KEY` locally (never commit `.env`).  
 **Frontend:** `apps/frontend/src/environments/environment.ts` → `useMockParse: false` (real OpenAI).
 
 ## Recent feature work (may relate to bug)
@@ -77,7 +77,7 @@ AppShellComponent.next() → store.parseReceipt()
 
 ```bash
 cd /Users/diamond/Desktop/split-app
-# Ensure backend .env has OPENAI_API_KEY
+# Ensure apps/backend/.env has OPENAI_API_KEY
 npm run dev
 # Open http://localhost:4200
 # Add friend, upload receipt, click Parse receipt

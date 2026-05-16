@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { formatKzt } from '@receipt-splitter/shared';
+import { formatKzt } from '@dutchy/shared';
 
 @Pipe({ name: 'kzt', standalone: true })
 export class KztPipe implements PipeTransform {

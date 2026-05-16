@@ -26,7 +26,7 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'npm run dev -w @receipt-splitter/backend',
+      command: 'npm run dev -w @dutchy/backend',
       cwd: '..',
       url: `http://localhost:${API_PORT}/api/health`,
       reuseExistingServer: !process.env.CI,
@@ -38,7 +38,7 @@ export default defineConfig({
       },
     },
     {
-      command: 'npm run start -w @receipt-splitter/frontend -- --configuration=e2e',
+      command: 'npm run start -w @dutchy/frontend -- --configuration=e2e',
       cwd: '..',
       url: `http://localhost:${PORT}`,
       reuseExistingServer: !process.env.CI,

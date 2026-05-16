@@ -1,5 +1,5 @@
-import type { ParseReceiptResponse } from '@receipt-splitter/shared';
-import { computeItemsSubtotal } from '@receipt-splitter/shared';
+import type { ParseReceiptResponse } from '@dutchy/shared';
+import { computeItemsSubtotal } from '@dutchy/shared';
 
 const items = [
   { id: 'item_1', name: 'Margherita Pizza', quantity: 1, price: 1000 },
