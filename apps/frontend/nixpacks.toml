@@ -1,0 +1,14 @@
+# Monorepo: install/build from repo root; serve static app on $PORT.
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["cd ../.. && npm ci"]
+
+[phases.build]
+cmds = [
+  "cd ../.. && npm run build -w @dutchy/shared && node scripts/generate-env.mjs && npm run build -w @dutchy/frontend",
+]
+
+[start]
+cmd = "npm run start:prod"

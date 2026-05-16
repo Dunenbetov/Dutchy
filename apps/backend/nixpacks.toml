@@ -1,0 +1,14 @@
+# Monorepo: install/build from repo root; run API from this service directory.
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["cd ../.. && npm ci"]
+
+[phases.build]
+cmds = [
+  "cd ../.. && npm run build -w @dutchy/shared && npm run build -w @dutchy/backend",
+]
+
+[start]
+cmd = "node dist/main.js"

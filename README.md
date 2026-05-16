@@ -61,6 +61,16 @@ Typical public URLs look like `dutchy-api-production.up.railway.app` and `dutchy
 
 Set watch paths so `apps/backend/**` and `apps/frontend/**` rebuild independently.
 
+### If build fails with «No start command could be found»
+
+1. **Root Directory** must be `apps/backend` or `apps/frontend` — not the repo root.
+2. In the service **Settings → Deploy**, set **Start Command** manually if needed:
+   - **api:** `node dist/main.js`
+   - **web:** `npm run start:prod`
+3. Redeploy after changing root directory or start command.
+
+Each service includes `nixpacks.toml` and `Procfile` so Nixpacks always has a start command.
+
 ## Project layout
 
 ```
