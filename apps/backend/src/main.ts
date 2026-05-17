@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import { assertProductionEnv } from './bootstrap-env';
 import { resolveCorsOrigin } from './cors-origin';
+import { helmetOptions } from './helmet-csp';
 import { isMonolithDeploy } from './static-dir';
 
 async function bootstrap() {
@@ -19,11 +20,7 @@ async function bootstrap() {
       : [{ path: '/', method: RequestMethod.GET }],
   });
 
-  app.use(
-    helmet({
-      crossOriginResourcePolicy: { policy: 'cross-origin' },
-    }),
-  );
+  app.use(helmet(helmetOptions()));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

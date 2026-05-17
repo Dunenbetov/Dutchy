@@ -36,6 +36,7 @@ export const environment = {
   production: true,
   apiUrl: ${JSON.stringify(apiUrl)},
   useMockParse: false,
+  serviceWorker: false,
 };
 `;
 
