@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReceiptFlowStore } from '../../core/receipt-flow.store';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
+import { SafeUrlPipe } from '../../core/safe-url.pipe';
 
 @Component({
   selector: 'app-step-setup',
-  imports: [FormsModule, TranslatePipe],
+  imports: [FormsModule, TranslatePipe, SafeUrlPipe],
   template: `
     <section class="flex min-w-0 flex-col gap-6" data-testid="step-setup">
       <header>
@@ -63,11 +64,13 @@ import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
       @if (store.receiptPreviewUrl(); as url) {
         <img
-          [src]="url"
+          [src]="url | safeUrl"
           [alt]="'setup.receiptPreviewAlt' | t"
-          class="max-h-40 w-full rounded-2xl object-cover ring-1 ring-border"
+          class="max-h-48 min-h-24 w-full rounded-2xl bg-surface-elevated object-contain ring-1 ring-border"
           width="390"
-          height="160"
+          height="192"
+          decoding="async"
+          data-testid="receipt-preview"
         />
       }
 

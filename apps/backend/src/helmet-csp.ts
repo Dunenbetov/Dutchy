@@ -21,6 +21,7 @@ export function helmetOptions(): Parameters<typeof helmet>[0] {
           'https://fonts.googleapis.com',
           'https://fonts.gstatic.com',
         ],
+        'img-src': ["'self'", 'data:', 'blob:', 'https:'],
         'style-src': ["'self'", 'https:', "'unsafe-inline'"],
         'font-src': ["'self'", 'https:', 'data:'],
       },
