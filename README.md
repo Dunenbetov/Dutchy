@@ -37,12 +37,19 @@ Use **mock parse** (no OpenAI spend) when `useMockParse: true` in `apps/frontend
 
 ### One service (recommended — like selling-tours)
 
-Same host serves the **Angular UI** and **`/api`** (Nest). Root **`Dockerfile`** builds both and sets `STATIC_DIR`.
+Same host serves the **Angular UI** and **`/api`** (Nest). One domain, no `API_URL` / CORS hassle.
 
-1. Connect the repo to Railway.
-2. **Root Directory:** repo root (empty / `.`) — **not** `apps/backend`.
-3. Railway uses the root **`Dockerfile`** (or `railway.toml` with `builder = "DOCKERFILE"`).
-4. **Variables** (no quotes in Raw Editor):
+**Option A — Dockerfile (repo root):**
+
+1. **Root Directory:** repo root (empty / `.`).
+2. Railway uses root **`Dockerfile`** (`railway.json` sets `builder: DOCKERFILE`).
+
+**Option B — Nixpacks (works with Root Directory `apps/backend` too):**
+
+1. Push latest code — `build:monolith` builds frontend + backend, `start:monolith` sets `STATIC_DIR`.
+2. If build logs show only `@dutchy/backend` (no frontend), redeploy after pull — old config was API-only.
+
+**Variables** (both options, no quotes in Raw Editor):
 
 | Variable | Example |
 |----------|---------|

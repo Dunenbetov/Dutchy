@@ -1,6 +1,10 @@
 {
   "name": "dutchy",
   "private": true,
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10.0.0"
+  },
   "workspaces": [
     "apps/*",
     "packages/*",
@@ -15,7 +19,7 @@
     "start:monolith": "STATIC_DIR=apps/frontend/dist/frontend/browser node apps/backend/dist/main.js",
     "build:api": "npm run build -w @dutchy/shared && npm run build -w @dutchy/backend",
     "build:web": "npm run build -w @dutchy/shared && node scripts/generate-env.mjs && npm run build -w @dutchy/frontend",
-    "start": "node apps/backend/dist/main.js",
+    "start": "npm run start:monolith",
     "start:api": "node apps/backend/dist/main.js",
     "start:web": "npm run start:prod -w @dutchy/frontend",
     "build:shared": "npm run build -w @dutchy/shared",

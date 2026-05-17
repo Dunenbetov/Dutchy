@@ -1,14 +1,12 @@
-# Monorepo: install/build from repo root; run API from this service directory.
+# Monolith from repo root when Railway Root Directory is apps/backend.
 [phases.setup]
-nixPkgs = ["nodejs_20"]
+nixPkgs = ["nodejs_22"]
 
 [phases.install]
 cmds = ["cd ../.. && npm ci"]
 
 [phases.build]
-cmds = [
-  "cd ../.. && npm run build -w @dutchy/shared && npm run build -w @dutchy/backend",
-]
+cmds = ["cd ../.. && npm run build:monolith"]
 
 [start]
-cmd = "node dist/main.js"
+cmd = "cd ../.. && npm run start:monolith"

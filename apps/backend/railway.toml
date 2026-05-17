@@ -1,9 +1,10 @@
+# Monolith: build UI + API from repo root (same domain). Root Directory can stay apps/backend.
 [build]
 builder = "NIXPACKS"
-buildCommand = "cd ../.. && npm ci && npm run build -w @dutchy/shared && npm run build -w @dutchy/backend"
+buildCommand = "cd ../.. && npm ci && npm run build:monolith"
 
 [deploy]
-startCommand = "node dist/main.js"
+startCommand = "cd ../.. && npm run start:monolith"
 healthcheckPath = "/api/health"
-healthcheckTimeout = 120
+healthcheckTimeout = 180
 restartPolicyType = "ON_FAILURE"

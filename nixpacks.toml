@@ -1,18 +1,13 @@
-# Monolith without Docker: builds frontend + API, serves SPA via STATIC_DIR.
-# Prefer repo-root Dockerfile on Railway (same as selling-tours).
+# One Railway service: Angular + Nest on the same domain (STATIC_DIR).
+# Prefer Dockerfile via railway.json when Root Directory is the repo root.
 [phases.setup]
-nixPkgs = ["nodejs_20"]
+nixPkgs = ["nodejs_22"]
 
 [phases.install]
 cmds = ["npm ci"]
 
 [phases.build]
-cmds = [
-  "npm run build -w @dutchy/shared",
-  "API_URL=/api node scripts/generate-env.mjs",
-  "npm run build -w @dutchy/frontend",
-  "npm run build -w @dutchy/backend",
-]
+cmds = ["npm run build:monolith"]
 
 [start]
-cmd = "STATIC_DIR=apps/frontend/dist/frontend/browser node apps/backend/dist/main.js"
+cmd = "npm run start:monolith"
