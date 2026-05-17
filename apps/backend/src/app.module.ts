@@ -10,8 +10,11 @@ import { ReceiptModule } from './receipt/receipt.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      ignoreEnvFile: process.env.NODE_ENV === 'production',
-      validate,
+      // On Railway, never load a stray .env from the image — use service Variables only.
+      ignoreEnvFile:
+        process.env.NODE_ENV === 'production' ||
+        Boolean(process.env.RAILWAY_ENVIRONMENT),
+      validate: () => validate(),
     }),
     ThrottlerModule.forRoot([
       {

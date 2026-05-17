@@ -48,16 +48,40 @@ Typical public URLs look like `dutchy-api-production.up.railway.app` and `dutchy
 
 - **Root directory:** `apps/backend` (uses `railway.toml`)
 - **Healthcheck:** `/api/health`
-- **Variables:**
-  - `NODE_ENV=production` (required)
-  - `OPENAI_API_KEY` (required in production)
-  - `CORS_ORIGIN=https://<your-web-host>`
+- **Variables** (Railway → API service → **Variables**):
+
+| Variable | Example | Notes |
+|----------|---------|--------|
+| `NODE_ENV` | `production` | Railway often sets this automatically |
+| `OPENAI_API_KEY` | `sk-...` | **Required** — app exits without it in production |
+| `CORS_ORIGIN` | `https://dutchy-web-production.up.railway.app` | **Web** service public URL (not the API host) |
+| `FRONTEND_URL` | (same as above) | Optional alias for `CORS_ORIGIN` |
+
+Do **not** point `CORS_ORIGIN` at the API domain — browsers call the API from the **web** origin.
 
 ### Web service
 
 - **Root directory:** `apps/frontend` (uses `railway.toml` — `serve` on `$PORT`)
 - **Variables (build time):**
-  - `API_URL=https://<your-api-host>` (`/api` appended automatically if missing)
+
+| Variable | Example | Notes |
+|----------|---------|--------|
+| `API_URL` | `https://dutchy-api-production.up.railway.app` | `/api` appended automatically if missing |
+
+Redeploy **web** after changing `API_URL` (baked into `environment.prod.ts` at build time).
+
+### Crash right after deploy (`OPENAI_API_KEY must be set`)
+
+Logs show Nest starting, then an `OPENAI_API_KEY` / `ExceptionHandler` error even when Variables look set in the UI.
+
+**Common causes:**
+
+1. **Empty value** — Railway masks variables as `*******` even when empty. Open **Raw Editor** and confirm `OPENAI_API_KEY=sk-...` has a real value.
+2. **No redeploy** — changing Variables requires **Redeploy** (not only Restart).
+3. **Wrong service** — variables must be on the **API** service (`Root Directory: apps/backend`), not only the web service.
+4. **Old build** — push the latest code; startup now reads `process.env` directly and logs `OPENAI_API_KEY defined: … length: …` when something is wrong.
+
+**Fix:** API service → **Variables** → set `OPENAI_API_KEY`, `CORS_ORIGIN` (web URL), `NODE_ENV=production` → **Redeploy**.
 
 Set watch paths so `apps/backend/**` and `apps/frontend/**` rebuild independently.
 

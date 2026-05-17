@@ -1,9 +1,15 @@
+import 'reflect-metadata';
 import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
-import { AppModule } from './app.module';
+import { assertProductionEnv } from './bootstrap-env';
+import { resolveCorsOrigin } from './cors-origin';
 
 async function bootstrap() {
+  assertProductionEnv();
+
+  const { NestFactory } = await import('@nestjs/core');
+  const { AppModule } = await import('./app.module');
+
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   app.use(
@@ -18,11 +24,7 @@ async function bootstrap() {
     }),
   );
 
-  const corsOrigin =
-    process.env.CORS_ORIGIN?.trim() ||
-    (process.env.RAILWAY_PUBLIC_DOMAIN
-      ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
-      : '');
+  const corsOrigin = resolveCorsOrigin();
   const origins = corsOrigin
     ? corsOrigin.split(',').map((o) => o.trim()).filter(Boolean)
     : [];
