@@ -1,11 +1,21 @@
 /** Public origin of the Angular app (web service), not the API host. */
 export function resolveCorsOrigin(): string {
-  const raw =
+  const fromEnv =
     process.env.CORS_ORIGIN?.trim() || process.env.FRONTEND_URL?.trim() || '';
-  if (!raw) return '';
+  if (fromEnv) {
+    return fromEnv
+      .split(',')
+      .map((p) => normalizeOrigin(p.trim()))
+      .filter(Boolean)
+      .join(',');
+  }
 
-  const parts = raw.split(',').map((p) => normalizeOrigin(p.trim())).filter(Boolean);
-  return parts.join(',');
+  // Monolith (API + SPA): same public host as the API service.
+  if (process.env.STATIC_DIR?.trim() && process.env.RAILWAY_PUBLIC_DOMAIN?.trim()) {
+    return normalizeOrigin(process.env.RAILWAY_PUBLIC_DOMAIN);
+  }
+
+  return '';
 }
 
 function normalizeOrigin(value: string): string {

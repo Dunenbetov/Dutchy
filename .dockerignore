@@ -1,0 +1,10 @@
+node_modules
+**/node_modules
+.git
+**/.angular
+**/dist
+apps/backend/.env
+.env
+*.md
+e2e
+agent-transcripts

@@ -1,5 +1,6 @@
 import { resolveCorsOrigin } from './cors-origin';
 import { openAiKeyFromProcessEnv } from './runtime-env';
+import { isMonolithDeploy } from './static-dir';
 
 /** Fail fast with Railway-friendly diagnostics before Nest ConfigModule runs. */
 export function assertProductionEnv(): void {
@@ -10,8 +11,8 @@ export function assertProductionEnv(): void {
   if (!openai) {
     missing.push('OPENAI_API_KEY');
   }
-  if (!resolveCorsOrigin()) {
-    missing.push('CORS_ORIGIN or FRONTEND_URL');
+  if (!resolveCorsOrigin() && !isMonolithDeploy()) {
+    missing.push('CORS_ORIGIN or FRONTEND_URL (not needed for monolith / STATIC_DIR)');
   }
   if (missing.length === 0) return;
 

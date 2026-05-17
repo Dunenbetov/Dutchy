@@ -1,0 +1,9 @@
+# One service: UI + API on the same domain (repo root Dockerfile).
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/api/health"
+healthcheckTimeout = 180
+restartPolicyType = "ON_FAILURE"

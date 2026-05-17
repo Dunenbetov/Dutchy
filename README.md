@@ -35,16 +35,36 @@ Use **mock parse** (no OpenAI spend) when `useMockParse: true` in `apps/frontend
 
 ## Railway deployment
 
-Create a Railway **project** named **Dutchy** and two services from this repo ([monorepo guide](https://docs.railway.com/guides/deploying-a-monorepo)). Use short service names so URLs stay compact (Railway adds environment suffixes), for example:
+### One service (recommended — like selling-tours)
+
+Same host serves the **Angular UI** and **`/api`** (Nest). Root **`Dockerfile`** builds both and sets `STATIC_DIR`.
+
+1. Connect the repo to Railway.
+2. **Root Directory:** repo root (empty / `.`) — **not** `apps/backend`.
+3. Railway uses the root **`Dockerfile`** (or `railway.toml` with `builder = "DOCKERFILE"`).
+4. **Variables** (no quotes in Raw Editor):
+
+| Variable | Example |
+|----------|---------|
+| `NODE_ENV` | `production` |
+| `OPENAI_API_KEY` | `sk-...` |
+
+`API_URL` and `CORS_ORIGIN` are **not required** — the UI calls `/api` on the same domain.
+
+5. **Networking** → generate a public domain → open `https://<your-app>.up.railway.app/` (the app, not JSON).
+
+Local check: `npm run build:monolith && npm run start:monolith`
+
+### Two services (API + web separately)
+
+Create two services from this repo ([monorepo guide](https://docs.railway.com/guides/deploying-a-monorepo)):
 
 | Service | Root directory | Suggested name in Railway |
 |---------|----------------|---------------------------|
 | API | `apps/backend` | `api` |
 | Web | `apps/frontend` | `web` |
 
-Typical public URLs look like `dutchy-api-production.up.railway.app` and `dutchy-web-production.up.railway.app` (exact hostnames depend on your project/service names).
-
-### API service
+### API service (two-service setup)
 
 - **Root directory:** `apps/backend` (uses `railway.toml`)
 - **Healthcheck:** `/api/health`
@@ -85,14 +105,8 @@ Logs show Nest starting, then an `OPENAI_API_KEY` / `ExceptionHandler` error eve
 
 ### `Cannot GET /` or 404 on the public URL
 
-The API only serves routes under `/api` (e.g. `/api/health`). Opening the API domain in a browser shows Nest’s `Cannot GET /` — that is expected.
-
-| URL | What you get |
-|-----|----------------|
-| `https://<api-host>/` | JSON hint (after latest deploy) or 404 |
-| `https://<api-host>/api/health` | `{"status":"ok"}` — use this to verify the API |
-
-The **Angular UI** must be a **second** Railway service with Root Directory `apps/frontend`. Open the **web** service URL in the browser, not the API URL.
+- **Monolith (one service):** push latest code, Root Directory = repo root, redeploy with `Dockerfile`. `/` should return HTML.
+- **API-only deploy (`apps/backend`):** `/` has no UI — use the **web** service URL, or switch to the one-service setup above.
 
 Set watch paths so `apps/backend/**` and `apps/frontend/**` rebuild independently.
 

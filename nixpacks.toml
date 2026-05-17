@@ -1,5 +1,5 @@
-# Used when Railway Root Directory is the repo root (default).
-# Prefer: set Root Directory to apps/backend (api) or apps/frontend (web).
+# Monolith without Docker: builds frontend + API, serves SPA via STATIC_DIR.
+# Prefer repo-root Dockerfile on Railway (same as selling-tours).
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
@@ -8,8 +8,11 @@ cmds = ["npm ci"]
 
 [phases.build]
 cmds = [
-  "npm run build -w @dutchy/shared && npm run build -w @dutchy/backend",
+  "npm run build -w @dutchy/shared",
+  "API_URL=/api node scripts/generate-env.mjs",
+  "npm run build -w @dutchy/frontend",
+  "npm run build -w @dutchy/backend",
 ]
 
 [start]
-cmd = "node apps/backend/dist/main.js"
+cmd = "STATIC_DIR=apps/frontend/dist/frontend/browser node apps/backend/dist/main.js"

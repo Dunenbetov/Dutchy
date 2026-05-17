@@ -11,6 +11,8 @@
     "dev:api": "npm run dev -w @dutchy/backend",
     "dev:web": "npm run start -w @dutchy/frontend",
     "build": "npm run build -w @dutchy/shared && npm run build -w @dutchy/backend && npm run build -w @dutchy/frontend",
+    "build:monolith": "npm run build -w @dutchy/shared && API_URL=/api node scripts/generate-env.mjs && npm run build -w @dutchy/frontend && npm run build -w @dutchy/backend",
+    "start:monolith": "STATIC_DIR=apps/frontend/dist/frontend/browser node apps/backend/dist/main.js",
     "build:api": "npm run build -w @dutchy/shared && npm run build -w @dutchy/backend",
     "build:web": "npm run build -w @dutchy/shared && node scripts/generate-env.mjs && npm run build -w @dutchy/frontend",
     "start": "node apps/backend/dist/main.js",

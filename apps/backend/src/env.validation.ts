@@ -10,6 +10,7 @@ import {
 } from 'class-validator';
 import { resolveCorsOrigin } from './cors-origin';
 import { openAiKeyFromProcessEnv, readRuntimeEnv } from './runtime-env';
+import { isMonolithDeploy } from './static-dir';
 
 enum Environment {
   Development = 'development',
@@ -47,12 +48,12 @@ export function validate(_config: Record<string, unknown> = {}) {
 
   if (validated.NODE_ENV === Environment.Production) {
     const cors = resolveCorsOrigin() || validated.CORS_ORIGIN?.trim() || '';
-    if (!cors) {
+    if (!cors && !isMonolithDeploy()) {
       throw new Error(
         'CORS_ORIGIN or FRONTEND_URL must be set when NODE_ENV=production',
       );
     }
-    validated.CORS_ORIGIN = cors;
+    if (cors) validated.CORS_ORIGIN = cors;
 
     const openai = openAiKeyFromProcessEnv() || validated.OPENAI_API_KEY?.trim();
     if (!openai) {

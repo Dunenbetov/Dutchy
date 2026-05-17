@@ -1,19 +1,24 @@
 import 'reflect-metadata';
 import { RequestMethod, ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import { assertProductionEnv } from './bootstrap-env';
 import { resolveCorsOrigin } from './cors-origin';
+import { isMonolithDeploy } from './static-dir';
 
 async function bootstrap() {
   assertProductionEnv();
 
-  const { NestFactory } = await import('@nestjs/core');
   const { AppModule } = await import('./app.module');
 
   const app = await NestFactory.create(AppModule);
+
   app.setGlobalPrefix('api', {
-    exclude: [{ path: '/', method: RequestMethod.GET }],
+    exclude: isMonolithDeploy()
+      ? []
+      : [{ path: '/', method: RequestMethod.GET }],
   });
+
   app.use(
     helmet({
       crossOriginResourcePolicy: { policy: 'cross-origin' },
@@ -38,6 +43,10 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
+
+  if (isMonolithDeploy()) {
+    console.log(`[dutchy] Monolith: UI + API on port ${port} (STATIC_DIR)`);
+  }
 }
 
 bootstrap();

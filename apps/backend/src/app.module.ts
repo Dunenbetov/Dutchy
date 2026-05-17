@@ -6,9 +6,12 @@ import { validate } from './env.validation';
 import { HealthController } from './health.controller';
 import { RootController } from './root.controller';
 import { ReceiptModule } from './receipt/receipt.module';
+import { SpaModule } from './spa.module';
+import { isMonolithDeploy } from './static-dir';
 
 @Module({
   imports: [
+    ...(isMonolithDeploy() ? [SpaModule] : []),
     ConfigModule.forRoot({
       isGlobal: true,
       // On Railway, never load a stray .env from the image — use service Variables only.
@@ -25,7 +28,10 @@ import { ReceiptModule } from './receipt/receipt.module';
     ]),
     ReceiptModule,
   ],
-  controllers: [RootController, HealthController],
+  controllers: [
+    ...(isMonolithDeploy() ? [] : [RootController]),
+    HealthController,
+  ],
   providers: [
     {
       provide: APP_GUARD,

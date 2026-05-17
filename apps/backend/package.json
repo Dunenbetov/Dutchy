@@ -9,12 +9,13 @@
     "start:prod": "node dist/main.js"
   },
   "dependencies": {
+    "@dutchy/shared": "*",
     "@nestjs/common": "^11.0.12",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.12",
     "@nestjs/platform-express": "^11.0.12",
+    "@nestjs/serve-static": "^5.0.5",
     "@nestjs/throttler": "^6.4.0",
-    "@dutchy/shared": "*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "helmet": "^8.1.0",
