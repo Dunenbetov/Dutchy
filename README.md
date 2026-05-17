@@ -83,6 +83,17 @@ Logs show Nest starting, then an `OPENAI_API_KEY` / `ExceptionHandler` error eve
 
 **Fix:** API service → **Variables** → set `OPENAI_API_KEY`, `CORS_ORIGIN` (web URL), `NODE_ENV=production` → **Redeploy**.
 
+### `Cannot GET /` or 404 on the public URL
+
+The API only serves routes under `/api` (e.g. `/api/health`). Opening the API domain in a browser shows Nest’s `Cannot GET /` — that is expected.
+
+| URL | What you get |
+|-----|----------------|
+| `https://<api-host>/` | JSON hint (after latest deploy) or 404 |
+| `https://<api-host>/api/health` | `{"status":"ok"}` — use this to verify the API |
+
+The **Angular UI** must be a **second** Railway service with Root Directory `apps/frontend`. Open the **web** service URL in the browser, not the API URL.
+
 Set watch paths so `apps/backend/**` and `apps/frontend/**` rebuild independently.
 
 ### If build fails with «No start command could be found»

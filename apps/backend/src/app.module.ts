@@ -4,6 +4,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { validate } from './env.validation';
 import { HealthController } from './health.controller';
+import { RootController } from './root.controller';
 import { ReceiptModule } from './receipt/receipt.module';
 
 @Module({
@@ -24,7 +25,7 @@ import { ReceiptModule } from './receipt/receipt.module';
     ]),
     ReceiptModule,
   ],
-  controllers: [HealthController],
+  controllers: [RootController, HealthController],
   providers: [
     {
       provide: APP_GUARD,

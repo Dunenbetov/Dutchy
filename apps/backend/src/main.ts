@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { ValidationPipe } from '@nestjs/common';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { assertProductionEnv } from './bootstrap-env';
 import { resolveCorsOrigin } from './cors-origin';
@@ -11,7 +11,9 @@ async function bootstrap() {
   const { AppModule } = await import('./app.module');
 
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', {
+    exclude: [{ path: '/', method: RequestMethod.GET }],
+  });
   app.use(
     helmet({
       crossOriginResourcePolicy: { policy: 'cross-origin' },
