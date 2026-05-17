@@ -48,7 +48,9 @@ export function validate(_config: Record<string, unknown> = {}) {
 
   if (validated.NODE_ENV === Environment.Production) {
     const cors = resolveCorsOrigin() || validated.CORS_ORIGIN?.trim() || '';
-    if (!cors && !isMonolithDeploy()) {
+    const monolith =
+      isMonolithDeploy() || Boolean(process.env.STATIC_DIR?.trim());
+    if (!cors && !monolith) {
       throw new Error(
         'CORS_ORIGIN or FRONTEND_URL must be set when NODE_ENV=production',
       );

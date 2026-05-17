@@ -1,10 +1,10 @@
-# Monolith: build UI + API from repo root (same domain). Root Directory can stay apps/backend.
+# One domain: UI + /api. Root Directory = apps/backend (or repo root — see /railway.toml).
 [build]
 builder = "NIXPACKS"
-buildCommand = "cd ../.. && npm ci && npm run build:monolith"
+buildCommand = "cd ../.. && npm ci && npm run build:railway"
 
 [deploy]
-startCommand = "cd ../.. && npm run start:monolith"
+startCommand = "STATIC_DIR=static node dist/main.js"
 healthcheckPath = "/api/health"
-healthcheckTimeout = 180
+healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"

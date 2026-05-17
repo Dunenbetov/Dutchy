@@ -11,7 +11,9 @@ export function assertProductionEnv(): void {
   if (!openai) {
     missing.push('OPENAI_API_KEY');
   }
-  if (!resolveCorsOrigin() && !isMonolithDeploy()) {
+  const monolith =
+    isMonolithDeploy() || Boolean(process.env.STATIC_DIR?.trim());
+  if (!resolveCorsOrigin() && !monolith) {
     missing.push('CORS_ORIGIN or FRONTEND_URL (not needed for monolith / STATIC_DIR)');
   }
   if (missing.length === 0) return;

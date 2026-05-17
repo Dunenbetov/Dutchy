@@ -41,12 +41,16 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const port = process.env.PORT ?? 3000;
-  await app.listen(port);
+  const port = Number(process.env.PORT ?? 3000);
+  const host = '0.0.0.0';
+  await app.listen(port, host);
 
-  if (isMonolithDeploy()) {
-    console.log(`[dutchy] Monolith: UI + API on port ${port} (STATIC_DIR)`);
-  }
+  console.log(
+    `[dutchy] Listening on http://${host}:${port} | health=/api/health | spa=${isMonolithDeploy()}`,
+  );
 }
 
-bootstrap();
+bootstrap().catch((err) => {
+  console.error('[dutchy] Startup failed:', err);
+  process.exit(1);
+});
