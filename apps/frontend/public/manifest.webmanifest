@@ -1,7 +1,7 @@
 {
   "name": "Dutchy",
   "short_name": "Dutchy",
-  "description": "Split restaurant bills with friends",
+  "description": "Snap a receipt and split the bill with friends",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#faf8f5",
