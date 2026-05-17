@@ -3,20 +3,19 @@ import { FormsModule } from '@angular/forms';
 import { assignmentSummaryLabel } from '@dutchy/shared';
 import { ReceiptFlowStore } from '../../core/receipt-flow.store';
 import { KztPipe } from '../../core/kzt.pipe';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
 @Component({
   selector: 'app-step-assign',
-  imports: [FormsModule, KztPipe],
+  imports: [FormsModule, KztPipe, TranslatePipe],
   template: `
     <section
       class="flex w-full min-w-0 max-w-full flex-col gap-4 overflow-x-hidden"
       data-testid="step-assign"
     >
       <header class="min-w-0">
-        <h1 class="text-2xl font-bold text-text">Assign dishes</h1>
-        <p class="mt-1 text-sm text-muted">
-          Set how many pieces each friend ordered. All pieces must be assigned.
-        </p>
+        <h1 class="text-2xl font-bold text-text">{{ 'assign.title' | t }}</h1>
+        <p class="mt-1 text-sm text-muted">{{ 'assign.subtitle' | t }}</p>
       </header>
 
       <div class="sticky top-0 z-10 flex gap-2 overflow-x-auto pb-2" role="tablist">
@@ -56,7 +55,10 @@ import { KztPipe } from '../../core/kzt.pipe';
                   class="font-tabular mt-0.5 text-sm text-muted"
                   [attr.data-testid]="'item-pcs-' + item.id"
                 >
-                  {{ item.quantity }} pcs × {{ item.price | kzt }}
+                  {{
+                    'assign.itemMeta'
+                      | t: { qty: item.quantity, price: (item.price | kzt) }
+                  }}
                 </p>
               </div>
               <div class="flex shrink-0 flex-col items-end gap-1">
@@ -74,7 +76,7 @@ import { KztPipe } from '../../core/kzt.pipe';
             </div>
 
             <p class="mt-2 text-xs text-muted">
-              Left to assign:
+              {{ 'assign.leftToAssign' | t }}
               <span class="font-tabular font-semibold text-text">{{ remaining }}</span>
             </p>
 
@@ -117,7 +119,14 @@ import { KztPipe } from '../../core/kzt.pipe';
                   @if (f) {
                     <span
                       class="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-medium text-text"
-                      >{{ f.name }}: {{ store.qtyForFriend(item.id, fid) }}</span
+                      >{{
+                        'assign.friendQty'
+                          | t
+                            : {
+                                name: f.name,
+                                qty: store.qtyForFriend(item.id, fid),
+                              }
+                      }}</span
                     >
                   }
                 }

@@ -19,6 +19,7 @@ import {
 } from '@dutchy/shared';
 import { ReceiptApiService } from './receipt-api.service';
 import { ImageCompressionService } from './image-compression.service';
+import { LocaleService } from './i18n/locale.service';
 
 export type WizardStep = 1 | 2 | 3 | 4;
 
@@ -28,6 +29,7 @@ const DEFAULT_SERVICE: ReceiptServiceCharge = { present: false };
 export class ReceiptFlowStore {
   private readonly api = inject(ReceiptApiService);
   private readonly compression = inject(ImageCompressionService);
+  private readonly i18n = inject(LocaleService);
 
   readonly step = signal<WizardStep>(1);
   readonly friends = signal<Friend[]>([]);
@@ -180,9 +182,7 @@ export class ReceiptFlowStore {
       : [];
 
     if (items.length === 0) {
-      this.parseError.set(
-        'No line items were found on this receipt. Try another photo or tap “+ Add item” below.',
-      );
+      this.parseError.set(this.i18n.t('parse.noItems'));
       this.items.set([]);
       this.receiptTotal.set(0);
       this.serviceCharge.set(DEFAULT_SERVICE);
@@ -253,7 +253,7 @@ export class ReceiptFlowStore {
       this.applyParseResult(result);
     } catch (err) {
       console.error('[ReceiptFlow] parse failed', err);
-      this.parseError.set(formatParseError(err));
+      this.parseError.set(this.formatParseError(err));
       this.items.set([]);
       this.receiptTotal.set(0);
       this.serviceCharge.set(DEFAULT_SERVICE);
@@ -276,7 +276,7 @@ export class ReceiptFlowStore {
     const n = this.items().length + 1;
     const item: ReceiptItem = {
       id: `item_${n}`,
-      name: 'New item',
+      name: this.i18n.t('review.newItem'),
       quantity: 1,
       price: 0,
     };
@@ -356,22 +356,62 @@ export class ReceiptFlowStore {
     const sc = this.serviceCharge();
     return this.friendTotals()
       .map((ft) => {
-        const lines = ft.lineItems.map(
-          (li) =>
-            `  • ${li.name} ×${li.quantity} — ${formatKzt(li.amount)}`,
+        const lines = ft.lineItems.map((li) =>
+          this.i18n.t('share.line', {
+            name: li.name,
+            qty: li.quantity,
+            amount: formatKzt(li.amount),
+          }),
         );
         const parts = [
           `${ft.friendName}`,
           ...lines,
-          `Subtotal: ${formatKzt(ft.subtotal)}`,
+          this.i18n.t('share.subtotal', { amount: formatKzt(ft.subtotal) }),
         ];
         if (sc.present && ft.serviceCharge > 0) {
-          parts.push(`Service: ${formatKzt(ft.serviceCharge)}`);
+          parts.push(
+            this.i18n.t('share.service', {
+              amount: formatKzt(ft.serviceCharge),
+            }),
+          );
         }
-        parts.push(`Total: ${formatKzt(ft.total)}`);
+        parts.push(
+          this.i18n.t('share.total', { amount: formatKzt(ft.total) }),
+        );
         return parts.join('\n');
       })
       .join('\n\n');
+  }
+
+  private formatParseError(err: unknown): string {
+    if (err instanceof HttpErrorResponse) {
+      if (err.status === 0) {
+        return this.i18n.t('parse.network');
+      }
+      const body = err.error;
+      let detail: string | null = null;
+      if (typeof body === 'string' && body.trim()) {
+        detail = body.trim();
+      } else if (body && typeof body === 'object') {
+        const msg = (body as { message?: unknown }).message;
+        if (Array.isArray(msg)) {
+          detail = msg.map(String).join(', ');
+        } else if (typeof msg === 'string') {
+          detail = msg;
+        }
+      }
+      if (detail) {
+        return this.i18n.t('parse.withStatus', {
+          status: err.status,
+          detail,
+        });
+      }
+      return this.i18n.t('parse.http', { status: err.status });
+    }
+    if (err instanceof Error && err.message) {
+      return err.message;
+    }
+    return this.i18n.t('parse.generic');
   }
 
   reset(): void {
@@ -426,34 +466,6 @@ function normalizeParsedTotals(
     };
   }
   return { receiptTotal, serviceCharge };
-}
-
-function formatParseError(err: unknown): string {
-  if (err instanceof HttpErrorResponse) {
-    if (err.status === 0) {
-      return 'Cannot reach the API. Run npm run dev (backend on :3000) and try again.';
-    }
-    const body = err.error;
-    let detail: string | null = null;
-    if (typeof body === 'string' && body.trim()) {
-      detail = body.trim();
-    } else if (body && typeof body === 'object') {
-      const msg = (body as { message?: unknown }).message;
-      if (Array.isArray(msg)) {
-        detail = msg.map(String).join(', ');
-      } else if (typeof msg === 'string') {
-        detail = msg;
-      }
-    }
-    if (detail) {
-      return `Could not read the receipt (${err.status}): ${detail}`;
-    }
-    return `Could not read the receipt (HTTP ${err.status}). Try again or add items manually.`;
-  }
-  if (err instanceof Error && err.message) {
-    return err.message;
-  }
-  return 'Could not read the receipt. Try again or edit items manually.';
 }
 
 function totalAssignedExcept(

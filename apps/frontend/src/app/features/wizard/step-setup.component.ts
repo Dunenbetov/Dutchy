@@ -1,15 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReceiptFlowStore } from '../../core/receipt-flow.store';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
 @Component({
   selector: 'app-step-setup',
-  imports: [FormsModule],
+  imports: [FormsModule, TranslatePipe],
   template: `
     <section class="flex min-w-0 flex-col gap-6" data-testid="step-setup">
       <header>
-        <h1 class="text-2xl font-bold tracking-tight text-text">Dutchy</h1>
-        <p class="mt-1 text-sm text-muted">Snap a receipt and split the bill with friends.</p>
+        <h1 class="text-2xl font-bold tracking-tight text-text">{{ 'app.title' | t }}</h1>
+        <p class="mt-1 text-sm text-muted">{{ 'app.tagline' | t }}</p>
       </header>
 
       <div
@@ -21,7 +22,7 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
           aria-hidden="true"
           >📷</span
         >
-        <p class="text-center text-sm text-muted">Add your receipt</p>
+        <p class="text-center text-sm text-muted">{{ 'setup.addReceipt' | t }}</p>
         <div class="flex w-full min-w-0 flex-col gap-2 sm:flex-row">
           <input
             #cameraInput
@@ -45,14 +46,14 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
             class="min-h-12 flex-1 rounded-2xl bg-accent px-4 font-semibold text-white transition hover:brightness-105 active:scale-[0.98]"
             (click)="cameraInput.click()"
           >
-            Take photo
+            {{ 'setup.takePhoto' | t }}
           </button>
           <button
             type="button"
             class="min-h-12 flex-1 rounded-2xl border border-border bg-surface px-4 font-semibold text-text transition hover:bg-accent-soft/40 active:scale-[0.98]"
             (click)="galleryInput.click()"
           >
-            Photo library
+            {{ 'setup.photoLibrary' | t }}
           </button>
         </div>
         @if (store.receiptFile(); as file) {
@@ -63,7 +64,7 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
       @if (store.receiptPreviewUrl(); as url) {
         <img
           [src]="url"
-          alt="Receipt preview"
+          [alt]="'setup.receiptPreviewAlt' | t"
           class="max-h-40 w-full rounded-2xl object-cover ring-1 ring-border"
           width="390"
           height="160"
@@ -71,7 +72,9 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
       }
 
       <div class="flex min-w-0 flex-col gap-3">
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-muted">Friends</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-muted">
+          {{ 'setup.friends' | t }}
+        </h2>
         <div class="flex flex-wrap gap-2">
           @for (friend of store.friends(); track friend.id) {
             <span
@@ -82,7 +85,7 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
               <button
                 type="button"
                 class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-base leading-none text-muted hover:bg-surface hover:text-text"
-                [attr.aria-label]="'Remove ' + friend.name"
+                [attr.aria-label]="'setup.removeFriend' | t: { name: friend.name }"
                 (click)="store.removeFriend(friend.id)"
               >
                 ×
@@ -94,7 +97,7 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
           <input
             type="text"
             class="field-input min-w-0 flex-1 basis-0"
-            placeholder="Friend name"
+            [placeholder]="'setup.friendPlaceholder' | t"
             [(ngModel)]="friendName"
             (keydown.enter)="addFriend()"
             data-testid="friend-name-input"
@@ -105,7 +108,7 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
             (click)="addFriend()"
             data-testid="add-friend-btn"
           >
-            Add
+            {{ 'setup.add' | t }}
           </button>
         </div>
       </div>

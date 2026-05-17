@@ -2,19 +2,21 @@ import { Component, inject, signal } from '@angular/core';
 import { ReceiptFlowStore } from '../../core/receipt-flow.store';
 import { ShareService } from '../../core/share.service';
 import { KztPipe } from '../../core/kzt.pipe';
+import { LocaleService } from '../../core/i18n/locale.service';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
 @Component({
   selector: 'app-step-summary',
-  imports: [KztPipe],
+  imports: [KztPipe, TranslatePipe],
   template: `
     <section class="flex flex-col gap-5 pb-4" data-testid="step-summary">
       <header>
-        <h1 class="text-2xl font-bold text-text">Summary</h1>
+        <h1 class="text-2xl font-bold text-text">{{ 'summary.title' | t }}</h1>
         <p class="mt-1 text-sm text-muted">
           @if (store.serviceCharge().present) {
-            Includes service charge from the receipt.
+            {{ 'summary.withService' | t }}
           } @else {
-            No service charge on this receipt.
+            {{ 'summary.noService' | t }}
           }
         </p>
       </header>
@@ -33,26 +35,26 @@ import { KztPipe } from '../../core/kzt.pipe';
               </li>
             }
             @if (ft.lineItems.length === 0) {
-              <li class="text-sm text-muted">No items assigned</li>
+              <li class="text-sm text-muted">{{ 'summary.noItems' | t }}</li>
             }
           </ul>
           <dl class="mt-3 space-y-1 text-sm">
             <div class="flex justify-between">
-              <dt class="text-muted">Subtotal</dt>
+              <dt class="text-muted">{{ 'summary.subtotal' | t }}</dt>
               <dd class="font-tabular font-medium text-text" data-testid="subtotal">
                 {{ ft.subtotal | kzt }}
               </dd>
             </div>
             @if (store.serviceCharge().present && ft.serviceCharge > 0) {
               <div class="flex justify-between">
-                <dt class="text-muted">Service charge</dt>
+                <dt class="text-muted">{{ 'summary.serviceCharge' | t }}</dt>
                 <dd class="font-tabular text-text" data-testid="service-charge">
                   {{ ft.serviceCharge | kzt }}
                 </dd>
               </div>
             }
             <div class="flex justify-between border-t border-border pt-2 text-base">
-              <dt class="font-bold text-text">Final total</dt>
+              <dt class="font-bold text-text">{{ 'summary.finalTotal' | t }}</dt>
               <dd class="font-tabular text-xl font-bold text-accent" data-testid="final-total">
                 {{ ft.total | kzt }}
               </dd>
@@ -68,7 +70,7 @@ import { KztPipe } from '../../core/kzt.pipe';
         data-testid="share-summary-btn"
       >
         <span aria-hidden="true">↗</span>
-        Share summary
+        {{ 'summary.share' | t }}
       </button>
       @if (shareMessage()) {
         <p class="text-center text-sm text-success">{{ shareMessage() }}</p>
@@ -79,11 +81,14 @@ import { KztPipe } from '../../core/kzt.pipe';
 export class StepSummaryComponent {
   readonly store = inject(ReceiptFlowStore);
   private readonly shareService = inject(ShareService);
+  private readonly i18n = inject(LocaleService);
   readonly shareMessage = signal<string | null>(null);
 
   async share(): Promise<void> {
     const text = this.store.buildShareText();
     const ok = await this.shareService.shareSummary(text);
-    this.shareMessage.set(ok ? 'Copied or shared!' : 'Could not share on this device');
+    this.shareMessage.set(
+      ok ? this.i18n.t('summary.sharedOk') : this.i18n.t('summary.sharedFail'),
+    );
   }
 }

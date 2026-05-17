@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ReceiptFlowStore, type WizardStep } from '../core/receipt-flow.store';
+import { LocaleService } from '../core/i18n/locale.service';
+import { TranslatePipe } from '../core/i18n/translate.pipe';
 import { StepSetupComponent } from '../features/wizard/step-setup.component';
 import { StepReviewComponent } from '../features/wizard/step-review.component';
 import { StepAssignComponent } from '../features/wizard/step-assign.component';
@@ -8,6 +10,7 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
 @Component({
   selector: 'app-shell',
   imports: [
+    TranslatePipe,
     StepSetupComponent,
     StepReviewComponent,
     StepAssignComponent,
@@ -23,20 +26,62 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
               class="h-2 w-8 rounded-full transition"
               [class]="store.step() >= s ? 'bg-accent' : 'bg-border'"
               [attr.aria-current]="store.step() === s ? 'step' : null"
-              [attr.aria-label]="'Step ' + s"
+              [attr.aria-label]="'shell.step' | t: { n: s }"
               (click)="goStep(s)"
             ></button>
           }
         </nav>
-        <button
-          type="button"
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-muted ring-1 ring-border transition hover:bg-surface-elevated hover:text-text"
-          (click)="store.toggleDarkMode()"
-          [attr.aria-label]="store.darkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
-          data-testid="toggle-dark"
-        >
-          {{ store.darkMode() ? 'Light' : 'Dark' }}
-        </button>
+        <div class="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            class="flex h-10 min-w-10 items-center justify-center rounded-full px-2 text-xs font-bold text-muted ring-1 ring-border transition hover:bg-surface-elevated hover:text-text"
+            (click)="i18n.toggleLocale()"
+            [attr.aria-label]="
+              i18n.locale() === 'ru' ? ('shell.localeToEn' | t) : ('shell.localeToRu' | t)
+            "
+            data-testid="toggle-locale"
+          >
+            {{ i18n.locale() === 'ru' ? 'EN' : 'RU' }}
+          </button>
+          <button
+            type="button"
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-muted ring-1 ring-border transition hover:bg-surface-elevated hover:text-text"
+            (click)="store.toggleDarkMode()"
+            [attr.aria-label]="
+              store.darkMode() ? ('shell.themeLight' | t) : ('shell.themeDark' | t)
+            "
+            data-testid="toggle-dark"
+          >
+            @if (store.darkMode()) {
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+              </svg>
+            } @else {
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            }
+          </button>
+        </div>
       </div>
 
       <div class="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
@@ -66,7 +111,7 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
             (click)="back()"
             data-testid="btn-back"
           >
-            Back
+            {{ 'shell.back' | t }}
           </button>
         }
         @if (store.step() < 4) {
@@ -77,7 +122,7 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
             (click)="next()"
             data-testid="btn-next"
           >
-            {{ store.step() === 1 ? 'Parse receipt' : 'Continue' }}
+            {{ store.step() === 1 ? ('shell.parseReceipt' | t) : ('shell.continue' | t) }}
           </button>
         } @else {
           <button
@@ -86,7 +131,7 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
             (click)="store.reset()"
             data-testid="btn-reset"
           >
-            Start over
+            {{ 'shell.startOver' | t }}
           </button>
         }
       </footer>
@@ -95,6 +140,7 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
 })
 export class AppShellComponent {
   readonly store = inject(ReceiptFlowStore);
+  readonly i18n = inject(LocaleService);
   readonly steps: WizardStep[] = [1, 2, 3, 4];
 
   goStep(s: WizardStep): void {

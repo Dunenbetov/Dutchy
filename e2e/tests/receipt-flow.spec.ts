@@ -41,7 +41,7 @@ async function assignAllPiecesToAlex(page: import('@playwright/test').Page) {
     const row = page.getByTestId(`assign-item-${id}`);
     await row.scrollIntoViewIfNeeded();
     const qtyText = await row.getByTestId(`item-pcs-${id}`).textContent();
-    const match = qtyText?.match(/^(\d+)\s*pcs/);
+    const match = qtyText?.match(/^(\d+)/);
     const totalQty = match ? Number(match[1]) : 1;
     const plus = row.getByTestId(`qty-plus-${id}`);
     while (await plus.isEnabled()) {

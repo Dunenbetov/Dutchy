@@ -1,6 +1,7 @@
 import { Component, effect, inject } from '@angular/core';
 import { AppShellComponent } from './layout/app-shell.component';
 import { ReceiptFlowStore } from './core/receipt-flow.store';
+import { LocaleService } from './core/i18n/locale.service';
 
 @Component({
   selector: 'app-root',
@@ -24,14 +25,21 @@ import { ReceiptFlowStore } from './core/receipt-flow.store';
 })
 export class App {
   readonly store = inject(ReceiptFlowStore);
+  private readonly i18n = inject(LocaleService);
 
   constructor() {
+    document.documentElement.lang = this.i18n.locale();
+
     effect(() => {
       const dark = this.store.darkMode();
       document.documentElement.classList.toggle('dark', dark);
       document
         .querySelector('meta[name="theme-color"]')
         ?.setAttribute('content', dark ? '#1c1917' : '#faf8f5');
+    });
+
+    effect(() => {
+      document.documentElement.lang = this.i18n.locale();
     });
   }
 }
