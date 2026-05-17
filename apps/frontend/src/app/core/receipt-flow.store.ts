@@ -40,7 +40,6 @@ export class ReceiptFlowStore {
   readonly isParsing = signal(false);
   readonly parseError = signal<string | null>(null);
   readonly activeFriendId = signal<string | null>(null);
-  readonly frameEnabled = signal(true);
   readonly darkMode = signal(false);
 
   readonly itemsSubtotal = computed(() => computeItemsSubtotal(this.items()));
@@ -116,10 +115,6 @@ export class ReceiptFlowStore {
 
   qtyForFriend(itemId: string, friendId: string): number {
     return assignedQuantity(this.assignments(), itemId, friendId);
-  }
-
-  setFrameEnabled(enabled: boolean): void {
-    this.frameEnabled.set(enabled);
   }
 
   toggleDarkMode(): void {

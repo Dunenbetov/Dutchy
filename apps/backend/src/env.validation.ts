@@ -37,10 +37,19 @@ export class EnvironmentVariables {
   CORS_ORIGIN?: string;
 }
 
-export function validate(_config: Record<string, unknown> = {}) {
-  const validated = plainToInstance(EnvironmentVariables, readRuntimeEnv(), {
-    enableImplicitConversion: true,
-  });
+export function validate(config: Record<string, unknown> = {}) {
+  // Nest passes vars from envFilePath in `config`; on Railway they are already in process.env.
+  const runtime = readRuntimeEnv();
+  const validated = plainToInstance(
+    EnvironmentVariables,
+    {
+      NODE_ENV: config.NODE_ENV ?? runtime.NODE_ENV,
+      PORT: config.PORT ?? runtime.PORT,
+      CORS_ORIGIN: config.CORS_ORIGIN ?? runtime.CORS_ORIGIN,
+      OPENAI_API_KEY: config.OPENAI_API_KEY ?? runtime.OPENAI_API_KEY,
+    },
+    { enableImplicitConversion: true },
+  );
   const errors = validateSync(validated, { skipMissingProperties: false });
   if (errors.length > 0) {
     throw new Error(errors.toString());

@@ -14,11 +14,13 @@ import { isMonolithDeploy } from './static-dir';
     ...(isMonolithDeploy() ? [SpaModule] : []),
     ConfigModule.forRoot({
       isGlobal: true,
+      // Monorepo `npm run dev` runs from repo root; backend secrets live in apps/backend/.env
+      envFilePath: ['apps/backend/.env', '.env'],
       // On Railway, never load a stray .env from the image — use service Variables only.
       ignoreEnvFile:
         process.env.NODE_ENV === 'production' ||
         Boolean(process.env.RAILWAY_ENVIRONMENT),
-      validate: () => validate(),
+      validate,
     }),
     ThrottlerModule.forRoot([
       {

@@ -12,27 +12,53 @@ import { ReceiptFlowStore } from '../../core/receipt-flow.store';
         <p class="mt-1 text-sm text-muted">Snap a receipt and split the bill with friends.</p>
       </header>
 
-      <label
-        class="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-border bg-surface-elevated px-6 py-10 transition hover:border-accent hover:bg-accent-soft/40"
+      <div
+        class="flex flex-col items-center gap-4 rounded-3xl border-2 border-dashed border-border bg-surface-elevated px-6 py-8"
         data-testid="upload-receipt"
       >
-        <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          class="sr-only"
-          (change)="onFile($event)"
-        />
         <span
           class="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-soft text-2xl"
           aria-hidden="true"
           >📷</span
         >
-        <span class="text-center font-semibold text-text">Take photo / Upload receipt</span>
+        <p class="text-center text-sm text-muted">Add your receipt</p>
+        <div class="flex w-full min-w-0 flex-col gap-2 sm:flex-row">
+          <input
+            #cameraInput
+            type="file"
+            accept="image/*"
+            capture="environment"
+            class="sr-only"
+            data-testid="upload-receipt-camera"
+            (change)="onFile($event)"
+          />
+          <input
+            #galleryInput
+            type="file"
+            accept="image/*"
+            class="sr-only"
+            data-testid="upload-receipt-gallery"
+            (change)="onFile($event)"
+          />
+          <button
+            type="button"
+            class="min-h-12 flex-1 rounded-2xl bg-accent px-4 font-semibold text-white transition hover:brightness-105 active:scale-[0.98]"
+            (click)="cameraInput.click()"
+          >
+            Take photo
+          </button>
+          <button
+            type="button"
+            class="min-h-12 flex-1 rounded-2xl border border-border bg-surface px-4 font-semibold text-text transition hover:bg-accent-soft/40 active:scale-[0.98]"
+            (click)="galleryInput.click()"
+          >
+            Photo library
+          </button>
+        </div>
         @if (store.receiptFile(); as file) {
-          <span class="text-xs text-muted">{{ file.name }}</span>
+          <span class="max-w-full truncate text-xs text-muted">{{ file.name }}</span>
         }
-      </label>
+      </div>
 
       @if (store.receiptPreviewUrl(); as url) {
         <img
@@ -94,6 +120,7 @@ export class StepSetupComponent {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0] ?? null;
     await this.store.setReceiptFile(file);
+    input.value = '';
   }
 
   addFriend(): void {

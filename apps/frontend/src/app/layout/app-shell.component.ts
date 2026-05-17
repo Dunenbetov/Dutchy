@@ -15,18 +15,29 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
   ],
   template: `
     <div class="flex min-h-0 flex-1 flex-col">
-      <nav class="mb-4 flex justify-center gap-2" aria-label="Progress">
-        @for (s of steps; track s) {
-          <button
-            type="button"
-            class="h-2 w-8 rounded-full transition"
-            [class]="store.step() >= s ? 'bg-accent' : 'bg-border'"
-            [attr.aria-current]="store.step() === s ? 'step' : null"
-            [attr.aria-label]="'Step ' + s"
-            (click)="goStep(s)"
-          ></button>
-        }
-      </nav>
+      <div class="mb-4 flex items-center gap-3">
+        <nav class="flex flex-1 justify-center gap-2" aria-label="Progress">
+          @for (s of steps; track s) {
+            <button
+              type="button"
+              class="h-2 w-8 rounded-full transition"
+              [class]="store.step() >= s ? 'bg-accent' : 'bg-border'"
+              [attr.aria-current]="store.step() === s ? 'step' : null"
+              [attr.aria-label]="'Step ' + s"
+              (click)="goStep(s)"
+            ></button>
+          }
+        </nav>
+        <button
+          type="button"
+          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-muted ring-1 ring-border transition hover:bg-surface-elevated hover:text-text"
+          (click)="store.toggleDarkMode()"
+          [attr.aria-label]="store.darkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+          data-testid="toggle-dark"
+        >
+          {{ store.darkMode() ? 'Light' : 'Dark' }}
+        </button>
+      </div>
 
       <div class="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
         @switch (store.step()) {
