@@ -18,13 +18,16 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
   ],
   template: `
     <div class="flex min-h-0 flex-1 flex-col">
-      <div class="mb-4 flex items-center gap-3">
-        <nav class="flex flex-1 justify-center gap-2" aria-label="Progress">
+      <div class="mb-5 flex items-center gap-3">
+        <nav
+          class="glass-pill grid flex-1 grid-cols-4 gap-1.5 rounded-full p-1.5"
+          aria-label="Progress"
+        >
           @for (s of steps; track s) {
             <button
               type="button"
-              class="h-2 w-8 rounded-full transition"
-              [class]="store.step() >= s ? 'bg-accent' : 'bg-border'"
+              class="h-3 rounded-full transition"
+              [class]="store.step() >= s ? 'bg-accent/80' : 'bg-border/50'"
               [attr.aria-current]="store.step() === s ? 'step' : null"
               [attr.aria-label]="'shell.step' | t: { n: s }"
               (click)="goStep(s)"
@@ -34,7 +37,7 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
         <div class="flex shrink-0 items-center gap-2">
           <button
             type="button"
-            class="flex h-10 min-w-10 items-center justify-center rounded-full px-2 text-xs font-bold text-muted ring-1 ring-border transition hover:bg-surface-elevated hover:text-text"
+            class="glass-pill flex h-10 min-w-10 items-center justify-center rounded-full px-2 text-xs font-bold text-muted transition hover:text-text"
             (click)="i18n.toggleLocale()"
             [attr.aria-label]="
               i18n.locale() === 'ru' ? ('shell.localeToEn' | t) : ('shell.localeToRu' | t)
@@ -45,7 +48,7 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
           </button>
           <button
             type="button"
-            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-muted ring-1 ring-border transition hover:bg-surface-elevated hover:text-text"
+            class="glass-pill flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-muted transition hover:text-text"
             (click)="store.toggleDarkMode()"
             [attr.aria-label]="
               store.darkMode() ? ('shell.themeLight' | t) : ('shell.themeDark' | t)
@@ -102,12 +105,12 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
       </div>
 
       <footer
-        class="mt-4 flex shrink-0 gap-3 border-t border-border pt-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+        class="glass mt-4 flex shrink-0 gap-3 rounded-3xl p-2.5 mb-[max(0.5rem,env(safe-area-inset-bottom))]"
       >
         @if (store.step() > 1) {
           <button
             type="button"
-            class="min-h-12 flex-1 rounded-2xl border border-border bg-surface-elevated font-semibold text-text"
+            class="glass-pill min-h-12 flex-1 rounded-2xl font-semibold text-text transition active:scale-[0.98]"
             (click)="back()"
             data-testid="btn-back"
           >
@@ -117,7 +120,7 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
         @if (store.step() < 4) {
           <button
             type="button"
-            class="min-h-12 flex-[2] rounded-2xl bg-accent font-semibold text-white disabled:opacity-40"
+            class="glass-accent min-h-12 flex-[2] rounded-2xl font-semibold text-white transition active:scale-[0.98] disabled:opacity-40 disabled:active:scale-100"
             [disabled]="!store.canProceed()"
             (click)="next()"
             data-testid="btn-next"
@@ -127,7 +130,7 @@ import { StepSummaryComponent } from '../features/wizard/step-summary.component'
         } @else {
           <button
             type="button"
-            class="min-h-12 flex-1 rounded-2xl border border-border font-semibold text-text"
+            class="glass-pill min-h-12 flex-1 rounded-2xl font-semibold text-text transition active:scale-[0.98]"
             (click)="store.reset()"
             data-testid="btn-reset"
           >

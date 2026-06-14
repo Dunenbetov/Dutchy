@@ -23,7 +23,7 @@ import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
       @for (ft of store.friendTotals(); track ft.friendId) {
         <article
-          class="rounded-3xl border border-border bg-surface-elevated p-5 shadow-sm"
+          class="glass-strong rounded-3xl p-5"
           [attr.data-testid]="'summary-card-' + ft.friendName"
         >
           <h2 class="text-lg font-bold text-text">{{ ft.friendName }}</h2>
@@ -65,7 +65,7 @@ import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
       <button
         type="button"
-        class="flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-accent text-base font-semibold text-white shadow-lg transition active:scale-[0.98]"
+        class="glass-accent flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl text-base font-semibold text-white active:scale-[0.98]"
         (click)="share()"
         data-testid="share-summary-btn"
       >

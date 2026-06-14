@@ -24,7 +24,7 @@ import {
 
       @if (store.isParsing()) {
         <div
-          class="flex flex-col items-center gap-4 rounded-3xl border border-border bg-surface-elevated/80 p-8 backdrop-blur-sm"
+          class="glass flex flex-col items-center gap-4 rounded-3xl p-8"
           data-testid="parsing-loader"
         >
           <div
@@ -41,7 +41,7 @@ import {
       } @else {
         @if (store.parseError(); as err) {
           <div
-            class="rounded-2xl border-2 border-accent bg-surface-elevated px-4 py-4 shadow-sm"
+            class="glass rounded-2xl border-2 border-accent px-4 py-4"
             role="alert"
             data-testid="parse-error"
           >
@@ -58,7 +58,7 @@ import {
         }
 
         <div
-          class="w-full min-w-0 rounded-2xl border p-4 box-border"
+          class="glass w-full min-w-0 rounded-2xl border p-4 box-border"
           [class]="
             store.totalsAligned()
               ? 'border-success/50 bg-success/10'
@@ -72,7 +72,7 @@ import {
               <input
                 type="text"
                 inputmode="numeric"
-                class="font-tabular min-h-11 w-full min-w-0 rounded-xl border border-border bg-surface-elevated px-3 text-text box-border"
+                class="font-tabular min-h-11 w-full min-w-0 rounded-xl border border-border bg-surface-elevated/60 px-3 text-text box-border"
                 [ngModel]="displayTotal()"
                 (ngModelChange)="onTotalInput($event)"
                 (blur)="onTotalBlur()"
@@ -110,8 +110,8 @@ import {
                     class="min-h-9 rounded-full px-3 text-sm font-semibold transition"
                     [class]="
                       store.serviceCharge().percent === p
-                        ? 'bg-accent text-white'
-                        : 'bg-surface-elevated text-text ring-1 ring-border'
+                        ? 'glass-accent text-white'
+                        : 'glass-pill text-text'
                     "
                     (click)="store.setServicePercent(p)"
                     [attr.data-testid]="'service-percent-' + p"
@@ -133,7 +133,7 @@ import {
               @if (store.suggestsSubtotalOnlyTotal()) {
                 <button
                   type="button"
-                  class="mt-2 min-h-10 w-full rounded-xl bg-accent px-3 text-sm font-semibold text-white"
+                  class="glass-accent mt-2 min-h-10 w-full rounded-xl px-3 text-sm font-semibold text-white"
                   (click)="store.applyGrandTotalWithService()"
                   data-testid="apply-grand-total-btn"
                 >
@@ -171,7 +171,7 @@ import {
         <ul class="flex w-full min-w-0 flex-col gap-3">
           @for (item of store.items(); track item.id) {
             <li
-              class="w-full min-w-0 rounded-2xl border border-border bg-surface-elevated p-3 shadow-sm box-border sm:p-4"
+              class="glass w-full min-w-0 rounded-2xl p-3 box-border sm:p-4"
               data-testid="receipt-item"
             >
               <input
@@ -186,7 +186,7 @@ import {
                   <input
                     type="text"
                     inputmode="numeric"
-                    class="font-tabular min-h-10 w-full min-w-0 rounded-xl border border-border px-2 text-text box-border"
+                    class="font-tabular min-h-10 w-full min-w-0 rounded-xl border border-border bg-surface-elevated/50 px-2 text-text box-border"
                     [ngModel]="displayQty(item.id, item.quantity)"
                     (ngModelChange)="onQtyInput(item.id, $event)"
                     (blur)="onQtyBlur(item.id)"
@@ -198,7 +198,7 @@ import {
                   <input
                     type="text"
                     inputmode="numeric"
-                    class="font-tabular min-h-10 w-full min-w-0 rounded-xl border border-border px-2 text-text box-border"
+                    class="font-tabular min-h-10 w-full min-w-0 rounded-xl border border-border bg-surface-elevated/50 px-2 text-text box-border"
                     [ngModel]="displayPrice(item.id, item.price)"
                     (ngModelChange)="onPriceInput(item.id, $event)"
                     (blur)="onPriceBlur(item.id)"

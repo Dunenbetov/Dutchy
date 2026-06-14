@@ -1,14 +1,16 @@
 import { Component, effect, inject } from '@angular/core';
 import { AppShellComponent } from './layout/app-shell.component';
+import { GlassBackgroundComponent } from './layout/glass-background.component';
 import { ReceiptFlowStore } from './core/receipt-flow.store';
 import { LocaleService } from './core/i18n/locale.service';
 
 @Component({
   selector: 'app-root',
-  imports: [AppShellComponent],
+  imports: [AppShellComponent, GlassBackgroundComponent],
   template: `
+    <app-glass-background />
     <div
-      class="flex min-h-dvh w-full flex-col bg-surface px-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pt-[max(0.5rem,env(safe-area-inset-top))]"
+      class="flex min-h-dvh w-full flex-col px-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pt-[max(0.5rem,env(safe-area-inset-top))]"
     >
       <app-shell class="min-h-0 flex-1" />
     </div>

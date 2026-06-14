@@ -9,13 +9,21 @@ import { SafeUrlPipe } from '../../core/safe-url.pipe';
   imports: [FormsModule, TranslatePipe, SafeUrlPipe],
   template: `
     <section class="flex min-w-0 flex-col gap-6" data-testid="step-setup">
-      <header>
-        <h1 class="text-2xl font-bold tracking-tight text-text">{{ 'app.title' | t }}</h1>
-        <p class="mt-1 text-sm text-muted">{{ 'app.tagline' | t }}</p>
+      <header class="flex items-center gap-4">
+        <!-- Decorative glass hero badge -->
+        <span
+          class="flex h-16 w-16 shrink-0 items-center justify-center rounded-[22px] bg-gradient-to-br from-accent to-success text-3xl ring-1 ring-white/40 shadow-[0_12px_28px_-12px_rgba(28,25,23,0.45),inset_0_1px_0_rgba(255,255,255,0.45)]"
+          aria-hidden="true"
+          >🧾</span
+        >
+        <div class="min-w-0">
+          <h1 class="text-2xl font-bold tracking-tight text-text">{{ 'app.title' | t }}</h1>
+          <p class="mt-1 text-sm text-muted">{{ 'app.tagline' | t }}</p>
+        </div>
       </header>
 
       <div
-        class="flex flex-col items-center gap-4 rounded-3xl border-2 border-dashed border-border bg-surface-elevated px-6 py-8"
+        class="glass flex flex-col items-center gap-4 rounded-3xl px-6 py-8"
         data-testid="upload-receipt"
       >
         <span
@@ -44,14 +52,14 @@ import { SafeUrlPipe } from '../../core/safe-url.pipe';
           />
           <button
             type="button"
-            class="min-h-12 flex-1 rounded-2xl bg-accent px-4 font-semibold text-white transition hover:brightness-105 active:scale-[0.98]"
+            class="glass-accent min-h-12 flex-1 rounded-2xl px-4 font-semibold text-white active:scale-[0.98]"
             (click)="cameraInput.click()"
           >
             {{ 'setup.takePhoto' | t }}
           </button>
           <button
             type="button"
-            class="min-h-12 flex-1 rounded-2xl border border-border bg-surface px-4 font-semibold text-text transition hover:bg-accent-soft/40 active:scale-[0.98]"
+            class="glass-pill min-h-12 flex-1 rounded-2xl px-4 font-semibold text-text transition active:scale-[0.98]"
             (click)="galleryInput.click()"
           >
             {{ 'setup.photoLibrary' | t }}
@@ -66,7 +74,7 @@ import { SafeUrlPipe } from '../../core/safe-url.pipe';
         <img
           [src]="url | safeUrl"
           [alt]="'setup.receiptPreviewAlt' | t"
-          class="max-h-48 min-h-24 w-full rounded-2xl bg-surface-elevated object-contain ring-1 ring-border"
+          class="max-h-48 min-h-24 w-full rounded-2xl bg-surface-elevated/60 object-contain ring-1 ring-border"
           width="390"
           height="192"
           decoding="async"
@@ -81,13 +89,13 @@ import { SafeUrlPipe } from '../../core/safe-url.pipe';
         <div class="flex flex-wrap gap-2">
           @for (friend of store.friends(); track friend.id) {
             <span
-              class="inline-flex items-center gap-1 rounded-full bg-accent-soft px-3 py-1.5 text-sm font-medium text-text"
+              class="glass-pill inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium text-text"
               data-testid="friend-chip"
             >
               {{ friend.name }}
               <button
                 type="button"
-                class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-base leading-none text-muted hover:bg-surface hover:text-text"
+                class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-base leading-none text-muted hover:bg-surface/60 hover:text-text"
                 [attr.aria-label]="'setup.removeFriend' | t: { name: friend.name }"
                 (click)="store.removeFriend(friend.id)"
               >
@@ -99,7 +107,7 @@ import { SafeUrlPipe } from '../../core/safe-url.pipe';
         <div class="flex min-w-0 items-stretch gap-2">
           <input
             type="text"
-            class="field-input min-w-0 flex-1 basis-0"
+            class="field-input field-glass min-w-0 flex-1 basis-0"
             [placeholder]="'setup.friendPlaceholder' | t"
             [(ngModel)]="friendName"
             (keydown.enter)="addFriend()"
@@ -107,7 +115,7 @@ import { SafeUrlPipe } from '../../core/safe-url.pipe';
           />
           <button
             type="button"
-            class="h-11 shrink-0 rounded-2xl bg-accent px-5 font-semibold text-white transition hover:brightness-105 active:scale-[0.98]"
+            class="glass-accent h-11 shrink-0 rounded-2xl px-5 font-semibold text-white active:scale-[0.98]"
             (click)="addFriend()"
             data-testid="add-friend-btn"
           >

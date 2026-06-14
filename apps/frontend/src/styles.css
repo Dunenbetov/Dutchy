@@ -20,10 +20,27 @@
     background-color: var(--color-surface);
     color: var(--color-text);
     -webkit-tap-highlight-color: transparent;
+
+    /* Liquid-glass surface tokens (light) */
+    --glass-bg: rgba(255, 255, 255, 0.5);
+    --glass-bg-strong: rgba(255, 255, 255, 0.68);
+    --glass-bg-accent: color-mix(in srgb, var(--color-accent) 78%, transparent);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --glass-highlight: rgba(255, 255, 255, 0.85);
+    --glass-shadow: 0 14px 30px -16px rgba(28, 25, 23, 0.3);
+    --glass-blur: 18px;
   }
 
   html.dark {
     color-scheme: dark;
+
+    /* Liquid-glass surface tokens (dark) */
+    --glass-bg: rgba(41, 37, 36, 0.46);
+    --glass-bg-strong: rgba(41, 37, 36, 0.66);
+    --glass-bg-accent: color-mix(in srgb, var(--color-accent) 70%, transparent);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-highlight: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 16px 34px -16px rgba(0, 0, 0, 0.6);
   }
 
   body {
@@ -72,6 +89,86 @@ a:focus-visible,
     outline: none;
     border-color: var(--color-accent);
     box-shadow: none;
+  }
+
+  /* Inputs sitting on glass panels read better translucent */
+  .field-input.field-glass {
+    background-color: var(--glass-bg);
+    border-color: var(--glass-border);
+    backdrop-filter: blur(8px) saturate(160%);
+    -webkit-backdrop-filter: blur(8px) saturate(160%);
+  }
+}
+
+/* ─────────────────────────  Liquid glass surfaces  ───────────────────────── */
+@layer components {
+  .glass {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow),
+      inset 0 1px 0 var(--glass-highlight);
+  }
+
+  /* More opaque + deeper blur — for content-heavy cards needing legibility */
+  .glass-strong {
+    background-color: var(--glass-bg-strong);
+    backdrop-filter: blur(26px) saturate(190%);
+    -webkit-backdrop-filter: blur(26px) saturate(190%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow),
+      inset 0 1px 0 var(--glass-highlight);
+  }
+
+  /* Compact translucent chip/button (toggles, pills) */
+  .glass-pill {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 1px 0 var(--glass-highlight);
+    transition:
+      background-color 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  /* Accent-tinted glass — primary actions */
+  .glass-accent {
+    background-color: var(--glass-bg-accent);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 50%, white 30%);
+    box-shadow:
+      0 12px 26px -14px color-mix(in srgb, var(--color-accent) 55%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transition:
+      filter 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  /* Selection highlight on glass — no drop shadow (lives inside clipped strips) */
+  .glass-accent-flat {
+    background-color: var(--glass-bg-accent);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 50%, white 30%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+
+  .glass-accent:hover {
+    filter: brightness(1.05);
+  }
+
+  /* Graceful fallback where backdrop-filter is unsupported */
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass,
+    .glass-strong,
+    .glass-pill {
+      background-color: var(--color-surface-elevated);
+    }
   }
 }
 
